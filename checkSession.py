@@ -12,8 +12,6 @@ def parseOptions(argv):
 	parser.add_argument('-v', action='version', version='%(prog)s '+ version)
 	args = parser.parse_args()
 	return args
-#	print (args.cookie)
-#	print (args.url)
 
 
 def checkSession(args):
@@ -27,11 +25,17 @@ def checkSession(args):
 	finally: 	
 		return (r.text)
 
+def checkResponse(response):
+	if ('logout' in response):
+		print ("TRUE")
+	else:
+		print ("FALSE")
+
 
 def main(argv):
 	parameters = parseOptions(argv)
 	response = checkSession(parameters)
-	print (response)
+	checkResponse(response)
 	#usage()
 	
 if __name__ == '__main__':
