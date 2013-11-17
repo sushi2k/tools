@@ -1,6 +1,6 @@
-#!/usr/local/Cellar/python3/3.3.2/Frameworks/Python.framework/Versions/3.3/bin/python3.3
+#!/usr/bin/env python
 
-import argparse, sys, requests
+import argparse, sys, requests, time
 
 version = "0.1"
 
@@ -25,19 +25,29 @@ def checkSession(args):
 	finally: 	
 		return (r.text)
 
+
 def checkResponse(response):
 	if ('logout' in response):
-		print ("TRUE")
+		return ("True")
 	else:
-		print ("FALSE")
+		return ("False")
 
 
 def main(argv):
-	parameters = parseOptions(argv)
-	response = checkSession(parameters)
-	checkResponse(response)
-	#usage()
+	#default pause of 10 minutes = 600 sec
+	defaultTimeout = 600
+	timeout = 0
+	loggedin = True
+	while loggedin:
+		parameters = parseOptions(argv)
+		response = checkSession(parameters)
+		loggedin = checkResponse(response)
+		print (loggedin)
+		timeout = timeout + defaultTimeout
+		print (timeout)
+		time.sleep(timeout)
+
+	
 	
 if __name__ == '__main__':
 	main(sys.argv[1:])
-	
